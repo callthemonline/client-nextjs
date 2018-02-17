@@ -1,5 +1,5 @@
 {
-  "private": "true",
+  "private": true,
   "dependencies": {
     "next": "^5.0.0",
     "react": "^16.2.0",
@@ -8,12 +8,19 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "tsc --noEmit && tslint -c tslint.json '{lib,pages,test}/**/*.ts{x,}' && prettier-check --ignore-path .gitignore \"{.,lib/**,pages/**,test/**}/{*.{j,t}s{x,},*.md,ts*.json,*.config.js}\"",
+    "format": "prettier --write --ignore-path .gitignore \"{.,lib/**,pages/**,test/**}/{*.{j,t}s{x,},*.md,ts*.json,*.config.js}\""
   },
   "devDependencies": {
     "@types/next": "^2.4.8",
     "@types/react": "^16.0.38",
     "@zeit/next-typescript": "^0.0.10",
+    "prettier": "^1.10.2",
+    "prettier-check": "^2.0.0",
+    "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.8.0",
+    "tslint-react": "^3.5.1",
     "typescript": "^2.7.2"
   }
 }
