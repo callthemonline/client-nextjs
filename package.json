@@ -4,6 +4,7 @@
     "apollo-cache-inmemory": "^1.1.9",
     "apollo-client": "^2.2.5",
     "apollo-link-http": "^1.5.2",
+    "envalid": "^4.1.4",
     "graphql": "0.12",
     "graphql-tag": "^2.8.0",
     "isomorphic-unfetch": "^2.0.0",
@@ -15,11 +16,11 @@
     "styled-components": "^3.1.6"
   },
   "scripts": {
-    "dev": "next",
-    "build": "next build",
-    "start": "next start",
-    "lint": "tsc --noEmit && tslint -c tslint.json '{lib,pages,test}/**/*.ts{x,}' && prettier-check --ignore-path .gitignore \"{.,lib/**,pages/**,test/**}/{*.{j,t}s{x,},*.md,ts*.json,*.config.js}\"",
-    "format": "prettier --write --ignore-path .gitignore \"{.,lib/**,pages/**,test/**}/{*.{j,t}s{x,},*.md,ts*.json,*.config.js}\""
+    "dev": "nodemon server/index.ts",
+    "build": "next build && tsc --module commonjs",
+    "start": "NODE_ENV=production node production-server/index.js",
+    "lint": "tsc --noEmit && tslint -c tslint.json '{lib,pages,server,test}/**/*.ts{x,}' && prettier-check --ignore-path .gitignore \"{.,lib/**,pages/**,server/**,test/**}/{*.{j,t}s{x,},*.md,ts*.json,*.config.js}\"",
+    "format": "prettier --write --ignore-path .gitignore \"{.,lib/**,pages/**,server/**,test/**}/{*.{j,t}s{x,},*.md,ts*.json,*.config.js}\""
   },
   "devDependencies": {
     "@types/next": "^2.4.8",
@@ -27,8 +28,10 @@
     "@zeit/next-typescript": "^0.0.10",
     "babel-plugin-inline-import": "^2.0.6",
     "babel-plugin-styled-components": "^1.5.1",
+    "nodemon": "^1.17.1",
     "prettier": "^1.11.1",
     "prettier-check": "^2.0.0",
+    "ts-node": "^5.0.1",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.9.0",
     "tslint-react": "^3.5.1",
