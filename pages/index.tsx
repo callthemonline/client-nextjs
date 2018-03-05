@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Link from "next/link";
 
 import Menu from "../lib/components/Menu";
@@ -7,6 +8,9 @@ import page from "../lib/hocs/page";
 
 export default page(["index", "common"])(({ t }) => (
   <PageLayout>
+    <Head>
+      <title>{t("page_title")}</title>
+    </Head>
     <Menu />
     <PageHeader>{t("greeting")}</PageHeader>
   </PageLayout>

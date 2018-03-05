@@ -1,9 +1,9 @@
 import gql from "graphql-tag";
+import Head from "next/head";
 import Link from "next/link";
 import { Fragment } from "react";
 import { Query } from "react-apollo";
 import { Trans } from "react-i18next";
-import styled from "styled-components";
 
 import Menu from "../lib/components/Menu";
 import PageHeader from "../lib/components/PageHeader";
@@ -24,6 +24,9 @@ class UnixTimestampQuery extends Query<GetCharacterQuery, null> {}
 
 export default page(["data-demo", "common"])(({ t }) => (
   <PageLayout>
+    <Head>
+      <title>{t("page_title")}</title>
+    </Head>
     <Menu />
     <UnixTimestampQuery query={QUERY} pollInterval={300}>
       {({ data }) => (
