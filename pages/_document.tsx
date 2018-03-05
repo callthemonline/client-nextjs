@@ -1,11 +1,18 @@
+import { createHash } from "crypto";
+import { readFileSync } from "fs";
 import Document, { Head, Main, NextScript } from "next/document";
 import { ServerStyleSheet } from "styled-components";
 
-import normalizeCss from "normalize.css";
-import baseCss from "../styles/base.css";
-import nprogressCss from "../styles/nprogress.css";
+// prevent caching in production
+// https://github.com/zeit/next-plugins/issues/11#issuecomment-370537941
+let version = "";
+if (process.env.NODE_ENV === "production") {
+  const hash = createHash("sha256");
+  hash.update(readFileSync(`${process.cwd()}/.next/static/style.css`));
+  version = `?v=${hash.digest("hex").substr(0, 8)}`;
+}
 
-export default class MyDocument extends Document {
+export default class extends Document {
   public static getInitialProps({ renderPage }) {
     const sheet = new ServerStyleSheet();
     const page = renderPage((App) => (props) =>
@@ -20,11 +27,7 @@ export default class MyDocument extends Document {
       <html>
         <Head>
           <title>Test Page</title>
-          <style
-            dangerouslySetInnerHTML={{
-              __html: normalizeCss + baseCss + nprogressCss,
-            }}
-          />
+          <link rel="stylesheet" href={`/_next/static/style.css${version}`} />
           {this.props.styleTags}
         </Head>
         <body>
