@@ -28,8 +28,8 @@
     "dev": "nodemon server/index.ts",
     "build": "next build && tsc --module commonjs",
     "start": "NODE_ENV=production node server/index.js",
-    "lint": "tsc --noEmit && tslint -c tslint.json '{lib,pages,server,test}/**/*.ts{x,}' && prettier-check --ignore-path .gitignore \"{.,lib/**,pages/**,server/**,test/**}/{*.{j,t}s{x,},*.md,ts*.json,*.config.js}\"",
-    "format": "prettier --write --ignore-path .gitignore \"{.,lib/**,pages/**,server/**,test/**}/{*.{j,t}s{x,},*.md,ts*.json,*.config.js}\""
+    "lint": "tsc --noEmit && tslint -c tslint.json '{lib,pages,server,test}/**/*.ts{x,}' && prettier-check --ignore-path .gitignore \"{.,lib/**,pages/**,server/**,test/**}/{*.ts{x,},*.md,ts*.json,*.config.js}\"",
+    "format": "prettier --write --ignore-path .gitignore \"{.,lib/**,pages/**,server/**,test/**}/{*.ts{x,},*.md,ts*.json,*.config.js}\""
   },
   "devDependencies": {
     "@types/next": "^2.4.8",
