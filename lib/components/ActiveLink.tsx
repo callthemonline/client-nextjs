@@ -1,10 +1,6 @@
-import { SingletonRouter, withRouter } from "next/router";
+import { withRouter } from "next/router";
 
-const ActiveLink: React.SFC<{ href: string; router: SingletonRouter }> = ({
-  children,
-  router,
-  href,
-}) => {
+const ActiveLink = ({ children, router, href }) => {
   const style = {
     marginRight: 10,
     background: router.pathname === href ? "#eee" : "none",
@@ -22,4 +18,4 @@ const ActiveLink: React.SFC<{ href: string; router: SingletonRouter }> = ({
   );
 };
 
-export default withRouter(ActiveLink);
+export default withRouter(ActiveLink) as React.SFC<{ href: string }>;

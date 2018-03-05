@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Link from "next/link";
 
 import Menu from "../lib/components/Menu";
 import PageHeader from "../lib/components/PageHeader";

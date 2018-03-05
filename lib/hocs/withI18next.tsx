@@ -1,12 +1,7 @@
-import React, { ComponentLifecycle } from "react";
 import { translate } from "react-i18next";
 import { getInitialProps, I18n } from "../i18n";
 
 const isBrowser = typeof window !== "undefined";
-
-function getComponentDisplayName(Component) {
-  return Component.displayName || Component.name || "Unknown";
-}
 
 export default (namespaces = ["common"]) => (ComposedComponent) => {
   const TranslatedComponent = translate(namespaces, {

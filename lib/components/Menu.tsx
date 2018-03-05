@@ -1,8 +1,9 @@
 import { translate } from "react-i18next";
+import { TranslationFunction } from "react-i18next";
 
 import ActiveLink from "./ActiveLink";
 
-export default translate(["common"])(({ t }) => (
+export default translate(["common"])(({ t }: { t: TranslationFunction }) => (
   <ul>
     <li>
       <ActiveLink href="/">{t("menu_home")}</ActiveLink>

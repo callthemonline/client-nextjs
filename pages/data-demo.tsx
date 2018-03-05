@@ -1,7 +1,5 @@
 import gql from "graphql-tag";
 import Head from "next/head";
-import Link from "next/link";
-import { Fragment } from "react";
 import { Query } from "react-apollo";
 import { Trans } from "react-i18next";
 

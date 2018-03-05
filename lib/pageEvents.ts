@@ -1,5 +1,8 @@
 import Router from "next/router";
 import NProgress from "nprogress";
+import { CustomWindow } from "./declarations/window";
+
+declare let window: CustomWindow;
 
 NProgress.configure({ showSpinner: false });
 
