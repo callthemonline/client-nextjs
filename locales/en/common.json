@@ -1,5 +1,6 @@
 {
   "menu_home": "Home",
   "menu_data-demo": "Data Demo",
-  "menu_404": "404"
+  "menu_404": "404",
+  "page_not_found": "Page Not Found"
 }
