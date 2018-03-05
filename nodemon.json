@@ -1,5 +1,5 @@
 {
-  "watch": ["server/**/*.ts", "lib/**/i18n.ts", "locales/**/*.json"],
+  "watch": ["server/**/*.ts", "locales/**/*.json"],
   "execMap": {
     "ts": "ts-node --compilerOptions '{\"module\":\"commonjs\"}'"
   }

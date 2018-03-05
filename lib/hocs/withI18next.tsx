@@ -1,5 +1,5 @@
 import { translate } from "react-i18next";
-import { getInitialProps, I18n } from "../i18n";
+import { getInitialProps, I18n } from "../../server/i18n";
 
 const isBrowser = typeof window !== "undefined";
 

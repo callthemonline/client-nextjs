@@ -6,7 +6,7 @@ import { join } from "path";
 
 import * as i18nextMiddleware from "i18next-express-middleware";
 import * as Backend from "i18next-node-fs-backend";
-import { i18nInstance } from "../lib/i18n";
+import { i18nInstance } from "./i18n";
 
 const env = cleanEnv(process.env, {
   GRAPHQL_URI: url(),
