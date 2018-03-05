@@ -1,18 +1,17 @@
 import Link from "next/link";
 import styled from "styled-components";
-import withData from "../lib/hocs/withData";
 
-const Div = styled.div`
+import Menu from "../lib/components/Menu";
+import page from "../lib/hocs/page";
+
+const H1 = styled.h1`
   color: red !important;
+  margin-left: 1em;
 `;
 
-export default withData(() => (
+export default page(["index", "common"])(({ t }) => (
   <div>
-    <Div>
-      Hello world!!!{" "}
-      <Link href="/data-demo">
-        <a>data-demo</a>
-      </Link>
-    </Div>
+    <Menu />
+    <H1>{t("greeting")}</H1>
   </div>
 ));
