@@ -15,7 +15,7 @@ build app:
   artifacts:
     paths:
       - .next
-      - server
+      - production-server
     expire_in: 1 day
 
 build image:
