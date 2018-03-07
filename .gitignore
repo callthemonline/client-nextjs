@@ -1,9 +1,6 @@
 # next.js
 .next/
-lib/**/*.js
-lib/**/*.js.map
-server/**/*.js
-server/**/*.js.map
+production-server/
 
 # Logs
 logs

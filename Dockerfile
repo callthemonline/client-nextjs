@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 COPY package.json /usr/src/app/
 RUN npm install --production
 
-COPY server /usr/src/app/server
+COPY production-server /usr/src/app/production-server
 COPY locales /usr/src/app/locales
 COPY .next /usr/src/app/.next
 
