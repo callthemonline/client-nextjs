@@ -4,7 +4,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY package.json yarn.lock /usr/src/app/
-RUN yarn --production
+RUN yarn --production && yarn cache clean
 
 COPY production-server /usr/src/app/production-server
 COPY locales /usr/src/app/locales
