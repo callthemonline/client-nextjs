@@ -1,6 +1,6 @@
 # next.js
 .next/
-production-server/
+build/
 
 # Logs
 logs

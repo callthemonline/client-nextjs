@@ -6,9 +6,10 @@ WORKDIR /usr/src/app
 COPY package.json yarn.lock /usr/src/app/
 RUN YARN_CACHE_FOLDER=/dev/shm/yarn_cache yarn --production
 
-COPY production-server /usr/src/app/production-server
-COPY locales /usr/src/app/locales
 COPY .next /usr/src/app/.next
+COPY locales /usr/src/app/locales
+COPY build /usr/src/app/build
+COPY src/static /usr/src/app/build/static
 
 EXPOSE 3000
 

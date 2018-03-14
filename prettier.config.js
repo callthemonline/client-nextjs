@@ -5,7 +5,7 @@ module.exports = {
     {
       files: "*.md",
       options: {
-        tabWidth: 4, // https://github.com/prettier/prettier/pull/3990
+        tabWidth: 4,
       },
     },
   ],

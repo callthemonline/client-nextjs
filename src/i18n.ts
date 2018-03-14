@@ -13,7 +13,7 @@ const options: InitOptions = {
   ns: ["common"],
   defaultNS: "common",
 
-  debug: false,
+  debug: process.env.NODE_ENV !== "production",
   saveMissing: true,
 
   interpolation: {
