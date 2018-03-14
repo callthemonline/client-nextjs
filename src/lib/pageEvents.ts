@@ -22,9 +22,6 @@ Router.onRouteChangeComplete = () => {
 Router.onRouteChangeError = () => {
   NProgress.done();
 };
-Router.onAppUpdated = (nextRoute) => {
-  window.location.href = nextRoute;
-};
 
 if (typeof window !== "undefined") {
   const oldOnError = window.onerror;
