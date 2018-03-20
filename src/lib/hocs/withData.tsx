@@ -28,11 +28,7 @@ export default (ComposedComponent) => {
 
     public static async getInitialProps(ctx) {
       // Initial serverState with apollo (empty)
-      let serverState = {
-        apollo: {
-          data: {},
-        },
-      };
+      let serverState;
 
       // eslint-disable-next-line no-underscore-dangle
       const { graphqlUri } = ctx.req || (window as any).__NEXT_DATA__.props;
@@ -53,15 +49,14 @@ export default (ComposedComponent) => {
       try {
         // Run all GraphQL queries
         await getDataFromTree(
-          <ApolloProvider client={apollo}>
-            <ComposedComponent url={url} {...composedInitialProps} />
-          </ApolloProvider>,
+          <ComposedComponent url={url} {...composedInitialProps} />,
           {
             router: {
               asPath: ctx.asPath,
               pathname: ctx.pathname,
               query: ctx.query,
             },
+            client: apollo,
           },
         );
       } catch (error) {
