@@ -14,7 +14,11 @@ const env = cleanEnv(process.env, {
   PORT: port({ default: 3000 }),
 });
 
-const app = next({ dev: env.NODE_ENV !== "production" });
+const app = next({
+  dir: __dirname,
+  conf: env.NODE_ENV === "production" ? { distDir: "../.next" } : undefined,
+  dev: env.NODE_ENV !== "production",
+});
 const handle = app.getRequestHandler();
 
 // init i18next with server-side settings
