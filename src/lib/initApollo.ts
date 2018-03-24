@@ -1,7 +1,10 @@
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { ApolloClient } from "apollo-client";
+import { setContext } from "apollo-link-context";
 import { HttpLink } from "apollo-link-http";
+import { parse } from "cookie";
 import fetch from "isomorphic-unfetch";
+import localLink from "./graphql/state";
 
 let apolloClient = null;
 
@@ -12,14 +15,29 @@ if (!isBrowser) {
   (global as any).fetch = fetch;
 }
 
-function create({ uri, initialState }) {
+const authLink = setContext((_, { headers }) => {
+  const { token } = parse(document.cookie);
+  return {
+    headers: {
+      ...headers,
+      token,
+    },
+  };
+});
+
+function create({ uri, initialState, conferencePhoneNumber }) {
+  console.log("CCCC", conferencePhoneNumber);
   return new ApolloClient({
     connectToDevTools: isBrowser,
     ssrMode: !isBrowser, // Disables forceFetch on the server (so queries are only run once)
-    link: new HttpLink({
-      uri, // Server URL (must be absolute)
-      credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
-    }),
+    link: localLink(conferencePhoneNumber).concat(
+      authLink.concat(
+        new HttpLink({
+          uri, // Server URL (must be absolute)
+          credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
+        }),
+      ),
+    ),
     cache: new InMemoryCache().restore(initialState || {}),
   });
 }

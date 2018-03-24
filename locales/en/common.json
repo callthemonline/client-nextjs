@@ -1,5 +1,12 @@
 {
-  "menu_home": "Home",
-  "menu_data-demo": "Data Demo",
-  "menu_404": "404"
+  "dialer": {
+    "label": "Who shall we call?",
+    "sample": "e.g. +44 000 000-00-00",
+    "dialing": "dialing...",
+    "onAir": "on air!"    
+  },
+  "appbar": {
+    "title": "callthem.online",
+    "reset": "Reset"
+  }
 }

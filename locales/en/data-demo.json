@@ -1,4 +1,0 @@
-{
-    "page_title": "Data demo page",
-    "time": "Time is: <1><0>{{now, date}}</0></1>"
-}

@@ -1,0 +1,20 @@
+import PropTypes from "prop-types";
+import React from "react";
+import { SipProvider } from "react-sip";
+import { compose, withContext, withState } from "recompose";
+
+const DynamicSipProvider = ({ sipConfig, children }) => (
+  <SipProvider {...sipConfig} debug={false}>
+    {children}
+  </SipProvider>
+);
+
+export default compose(
+  withState("sipConfig", "updateSipConfig"),
+  withContext(
+    {
+      updateSipConfig: PropTypes.func,
+    },
+    ({ updateSipConfig }) => ({ updateSipConfig }),
+  ),
+)(DynamicSipProvider);

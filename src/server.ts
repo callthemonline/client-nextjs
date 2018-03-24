@@ -12,6 +12,7 @@ const env = cleanEnv(process.env, {
   GRAPHQL_URI: url(),
   NODE_ENV: str({ default: "development" }),
   PORT: port({ default: 3000 }),
+  CONFERENCE_PHONE_NUMBER: str({ default: "3500" }),
 });
 
 const app = next({
@@ -56,6 +57,7 @@ i18nInstance
         server.get("*", (req, res) => {
           // const parsedUrl = parse(req.url, true);
           (req as any).graphqlUri = env.GRAPHQL_URI;
+          (req as any).conferencePhoneNumber = env.CONFERENCE_PHONE_NUMBER;
           // req.i18n = i18nInstance;
           handle(req, res);
         });
