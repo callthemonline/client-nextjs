@@ -1,0 +1,23 @@
+language: node_js
+node_js:
+- 8
+cache:
+  directories:
+  - node_modules
+script:
+- yarn
+- yarn lint
+- yarn build
+env:
+  global:
+  - COMMIT=${TRAVIS_COMMIT::8}
+  - secure: lgJ7zt8/ynj0+1C8QNA53dJk489Brzsdez21MkWdaJO8HJyIebT+O5I8EMJ+6FmFlIfMy223mog+tzYQXeAqsSNQTe7hJ5tAjYFsFIyzAM5xo5KlJmBNxySJayQ8pd9S9cLotvTBhhw+G21VdL5jmtAHtKScs/6XZ5qmkTcVPWSrhBD/cAQVGToJJfOKgzj/+9iRm1QXJMrKO5UW1W6DeAeQ4TVF1Hr6viBU+rxjOjiqPfi+RLQiVvFM6F0yk91JR0srof8zbRAan3l7i4gTrqz9jVRyVMlaEnRuOMPJfAIRz0zv5DWJj6EtYo4g7bZBO8vugaxqx5KDb/JFArnrlWpmxslqhALNWKexgsvMFtYnK32fyWfvLDn1te9mN71gTXMTYK3IpMfDRiq3MCKNPJUOxlIm51AYYHSeM5qc/o4u0cv7h4s5gwmGmN40tvAet0BAbiu4IzWJUxivVJbds4J3iawyt2kDYCLu6svZKMvniPUvcWvuRqUQYDpZXddj3lL4wTOaKR60pp6VwrFEOGHjtu3za8sSGLXE1v7QxMK627MfHW6B6comI8wwxF3jwHU74dUlUVMPdEYc0N41gMZ+2TwFiymgYjdY+iEBTNObo1fimNP4iOhX/CstiVT8u5zEagtKMuTvREsu1bfBkvsP2yu2LMrnP5QJshaIN+w=
+  - secure: XTeue5/61AUbGKdjkEG6QxHvaf/IjTVMi2NloY9QCWL5MmzSwlCqFbzkAYNQ8Ly5JeKTeU9KFxyHw/mfylSzYBxGiLBlJ5wd6nJM7NUhxdv0aIFuXIq24yKvEdlnkPjzXrokEy4xd10UMlBeM3VxJiiMo9AJCHyvZ8Do7FyNzzKoZk8axx0KKquEL51j8kbnoCERus2AbIU4UEhKdU0Sy2dT1shD6yFL6gJ3vOUaFHyc7Fai9z90pjlsAkGVbBOVlWqJ2uAALs9KeC4jgHbeBiD1mMYTcf8oEuIyb4erQTOQH1ireKGObzELtP5z6Yn2AdX9Xz/9k6n45awMKOc6QgGsYLrCzxTfHS5C3eYD8Kowp9K+QYV+zRViJHJwN/ZQYoni5fcx3ESaOt8bmaFR0Bka43sAMBe5DjJAVpCWDUbptRxc253NA6FXOl5y/sqv/3mFfdSiblgidVgumDmbWzulJhLoxd4z5hRyexvnFQvkpTAp+VwqfebaCTD1ikJzK5GPRn91CWPlKeqzaNDU3NhMkIMjLI5gWxSsD2+CBAga3soWJKFX3SmcZe8D8IdxI3Lp9y7c7QxYevNIm0o59+rq9AK7iqzFR/96GJ7jEmnmn/+o0eblEr/JTUTBpgjMp5U03iYeyQL8x7faXMhPUxAnOM2VJxLA4cH/J+wMLkc=
+after_success:
+- export REPO=callthemonline/client-nextjs
+- export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH
+  ; fi`
+- docker build -f Dockerfile -t $REPO:$COMMIT --shm-size 512M .
+- docker tag $REPO:$COMMIT $REPO:$TAG
+- docker login -u $DOCKER_USER -p $DOCKER_PASS
+- docker push $REPO
