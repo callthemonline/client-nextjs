@@ -1,8 +1,11 @@
 import React from "react";
+import NoSSR from "react-no-ssr";
 import { connect } from "react-redux";
+import { branch, compose, renderComponent } from "recompose";
 import styled from "styled-components";
 import CallLog from "./CallLog";
 import Dialer from "./Dialer";
+import Loading from "./Loading";
 import MainArea from "./MainArea";
 
 const DialWrapper = styled.div`
@@ -23,20 +26,29 @@ const CallLogWrapper = styled.div`
 
 const MainAreaWithDialer = ({ callLogIsEmpty = true }) => (
   <MainArea>
-    <DialWrapper data-calllogisempty={callLogIsEmpty}>
-      <Dialer />
-    </DialWrapper>
-    <CallLogWrapper data-calllogisempty={callLogIsEmpty}>
-      <CallLog />
-    </CallLogWrapper>
+    <NoSSR onSSR={<Loading />}>
+      <DialWrapper data-calllogisempty={callLogIsEmpty}>
+        <Dialer />
+      </DialWrapper>
+      <CallLogWrapper data-calllogisempty={callLogIsEmpty}>
+        <CallLog />
+      </CallLogWrapper>
+    </NoSSR>
   </MainArea>
 );
 
-export default connect(
-  (state) => ({
-    callLogIsEmpty: !state.callLog.entries.length,
-  }),
-  null,
-  null,
-  { pure: false },
+export default compose(
+  connect(
+    (state) => ({
+      callLogIsEmpty: !state.callLog.entries.length,
+      rehydrationComplete: !state.persistence.rehydrationComplete,
+    }),
+    null,
+    null,
+    { pure: false },
+  ),
+  branch(
+    ({ rehydrationComplete }) => rehydrationComplete,
+    renderComponent(Loading),
+  ),
 )(MainAreaWithDialer);
