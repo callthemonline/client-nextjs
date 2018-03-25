@@ -30,8 +30,8 @@ export default (ComposedComponent) => {
       // Initial serverState with apollo (empty)
       let serverState;
 
-      // eslint-disable-next-line no-underscore-dangle
-      const { graphqlUri } = ctx.req || (window as any).__NEXT_DATA__.props;
+      const { graphqlUri, conferencePhoneNumber } =
+        ctx.req || (window as any).__NEXT_DATA__.props;
 
       // Evaluate the composed component's getInitialProps()
       let composedInitialProps = {};
@@ -39,7 +39,7 @@ export default (ComposedComponent) => {
         composedInitialProps = await ComposedComponent.getInitialProps(ctx);
       }
 
-      const apollo = initApollo({ uri: graphqlUri });
+      const apollo = initApollo({ uri: graphqlUri, conferencePhoneNumber });
 
       // Provide the `url` prop data in case a GraphQL query uses it
       const url = { query: ctx.query, pathname: ctx.pathname };
@@ -81,6 +81,7 @@ export default (ComposedComponent) => {
       return {
         serverState,
         graphqlUri,
+        conferencePhoneNumber,
         ...composedInitialProps,
       };
     }
@@ -91,6 +92,7 @@ export default (ComposedComponent) => {
       super(props);
       this.apollo = initApollo({
         uri: props.graphqlUri,
+        conferencePhoneNumber: props.conferencePhoneNumber,
         initialState: this.props.serverState.apollo.data,
       });
     }

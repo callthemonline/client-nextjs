@@ -1,11 +1,11 @@
 import { withClientState } from "apollo-link-state";
-import localForage from "localforage";
+// import localForage from "localforage";
 import { DialerInfo } from "./queries";
 
 // TODO refactor after https://github.com/apollographql/apollo-link-state/issues/119 is resolved
-let persistedPhoneNumber;
+const persistedPhoneNumber = null;
 (async () => {
-  persistedPhoneNumber = await localForage.getItem("dialer/PHONE_NUMBER");
+  // persistedPhoneNumber = await localForage.getItem("dialer/PHONE_NUMBER");
 })();
 
 export default (conferencePhoneNumber) =>
@@ -37,7 +37,7 @@ export default (conferencePhoneNumber) =>
               dialer: updatedDialer,
             },
           });
-          localForage.setItem("dialer/PHONE_NUMBER", phoneNumber);
+          // localForage.setItem("dialer/PHONE_NUMBER", phoneNumber);
           return updatedDialer;
         },
       },

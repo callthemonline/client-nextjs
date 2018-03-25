@@ -1,8 +1,5 @@
-import { blue } from "material-ui/colors";
-
 import { SheetsRegistry } from "jss";
-import green from "material-ui/colors/green";
-import purple from "material-ui/colors/purple";
+import { blue } from "material-ui/colors";
 import { createGenerateClassName, createMuiTheme } from "material-ui/styles";
 
 const theme = createMuiTheme({

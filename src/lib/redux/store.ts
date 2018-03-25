@@ -1,6 +1,5 @@
-import localForage from "localforage";
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
-import { autoRehydrate, persistStore } from "redux-persist";
+import { autoRehydrate } from "redux-persist";
 
 import callLogReducer from "./callLog/reducer";
 

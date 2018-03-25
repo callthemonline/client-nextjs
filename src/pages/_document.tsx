@@ -38,7 +38,6 @@ export default class extends Document {
         <React.Fragment>
           <style
             id="jss-server-side"
-            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{
               __html: pageContext.sheetsRegistry.toString(),
             }}

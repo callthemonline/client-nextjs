@@ -1,4 +1,3 @@
-import Head from "next/head";
 import Link from "next/link";
 
 import MainAreaWith404 from "../lib/components/MainAreaWith404";

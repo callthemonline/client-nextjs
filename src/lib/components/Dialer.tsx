@@ -131,10 +131,8 @@ export default compose(
     updateSipConfig: PropTypes.func,
     conferencePhoneNumber: PropTypes.string,
   }),
-  withPropsOnChange(["sip"], ({ sip }) => ({
+  withPropsOnChange(["sip", "call"], ({ sip, call }) => ({
     sipStatus: sip.status,
-  })),
-  withPropsOnChange(["call"], ({ call }) => ({
     callStatus: call.status,
   })),
   connect(
@@ -159,7 +157,7 @@ export default compose(
           const phoneNumberProto = phoneUtil.parse(phoneNumber, "UK");
           phoneNumberIsValid = phoneUtil.isValidNumber(phoneNumberProto);
         } catch (e) {
-          /* eslint-disable-line no-empty */
+          // no need to do anything if phone number did not pass validation
         }
       }
       return {
@@ -225,7 +223,6 @@ export default compose(
           updateSipConfig(config);
           let i = 20;
           while (i > 0 && getSipStatus() !== SIP_STATUS_CONNECTED) {
-            // eslint-disable-next-line no-await-in-loop
             await sleep(100);
             i -= 1;
           }

@@ -21,7 +21,7 @@ const CallLogWrapper = styled.div`
   overflow: scroll;
 `;
 
-const MainAreaWithDialer = ({ callLogIsEmpty }) => (
+const MainAreaWithDialer = ({ callLogIsEmpty = true }) => (
   <MainArea>
     <DialWrapper data-calllogisempty={callLogIsEmpty}>
       <Dialer />
@@ -32,6 +32,11 @@ const MainAreaWithDialer = ({ callLogIsEmpty }) => (
   </MainArea>
 );
 
-export default connect((state) => ({
-  callLogIsEmpty: !state.callLog.entries.length,
-}))(MainAreaWithDialer);
+export default connect(
+  (state) => ({
+    callLogIsEmpty: !state.callLog.entries.length,
+  }),
+  null,
+  null,
+  { pure: false },
+)(MainAreaWithDialer);

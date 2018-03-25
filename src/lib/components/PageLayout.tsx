@@ -1,10 +1,13 @@
 import Head from "next/head";
+import PropTypes from "prop-types";
 import React from "react";
+import { getContext } from "recompose";
 import styled from "styled-components";
 import AppBar from "./AppBar";
-import DynamicSipProvider from "./DynamicSipProvider";
 
-const Wrapper = styled.div`
+const Wrapper = getContext({
+  call: PropTypes.object,
+})(styled.div`
   position: absolute;
   top: 0;
   right: 0;
@@ -12,18 +15,23 @@ const Wrapper = styled.div`
   left: 0;
   display: flex;
   flex-direction: column;
-`;
+`);
 
-const PageLayout = ({ children, title }) => (
-  <DynamicSipProvider>
-    <Head>
-      <title>{title}</title>
-    </Head>
-    <Wrapper>
-      <AppBar />
-      {children}
-    </Wrapper>
-  </DynamicSipProvider>
-);
+class PageLayout extends React.Component<{ children; title }> {
+  public render() {
+    const { children, title } = this.props;
+    return (
+      <React.Fragment>
+        <Head>
+          <title>{title}</title>
+        </Head>
+        <Wrapper>
+          <AppBar />
+          {children}
+        </Wrapper>
+      </React.Fragment>
+    );
+  }
+}
 
 export default PageLayout;

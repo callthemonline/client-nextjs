@@ -47,9 +47,13 @@ const Wrapper = styled(Paper).attrs({
   display: flex;
 `;
 
+const StyledList = styled(List)`
+  width: 100%;
+`;
+
 const DialLog = ({ entries, onListItemClick, allowListItemClicks }) => (
   <Wrapper>
-    <List subheader={<ListSubheader>Your Call Log</ListSubheader>}>
+    <StyledList subheader={<ListSubheader>Your Call Log</ListSubheader>}>
       {_.map(entries, (entry, i) => (
         <ListItem
           button={allowListItemClicks}
@@ -63,7 +67,7 @@ const DialLog = ({ entries, onListItemClick, allowListItemClicks }) => (
           />
         </ListItem>
       ))}
-    </List>
+    </StyledList>
   </Wrapper>
 );
 

@@ -26,7 +26,6 @@ const authLink = setContext((_, { headers }) => {
 });
 
 function create({ uri, initialState, conferencePhoneNumber }) {
-  console.log("CCCC", conferencePhoneNumber);
   return new ApolloClient({
     connectToDevTools: isBrowser,
     ssrMode: !isBrowser, // Disables forceFetch on the server (so queries are only run once)
