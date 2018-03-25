@@ -3,6 +3,7 @@
   "scripts": {
     "dev": "nodemon src/server.ts",
     "build": "next build src && rimraf build && tsc --project tsconfig.server.json && ln -s ../src/static build/static",
+    "analyze": "BUNDLE_ANALYZE=both yarn build",
     "start": "NODE_ENV=production node build/server.js",
     "lint": "tsc --noEmit && tslint -c tslint.json 'src/**/*.ts{x,}' && prettier-check --ignore-path .gitignore \"{.,src/**}/{*.ts{x,},*.md,ts*.json,*.config.js}\"",
     "format": "prettier --write --ignore-path .gitignore \"{.,src/**}/{*.ts{x,},*.md,ts*.json,*.config.js}\""
@@ -54,6 +55,7 @@
     "@types/nprogress": "^0.0.29",
     "@types/react": "^16.0.40",
     "@types/react-i18next": "^7.3.1",
+    "@zeit/next-bundle-analyzer": "^0.1.1",
     "@zeit/next-css": "^0.1.3",
     "@zeit/next-typescript": "^0.0.10",
     "babel-plugin-inline-import": "^2.0.6",
