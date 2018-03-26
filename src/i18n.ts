@@ -1,6 +1,5 @@
 import * as i18n from "i18next";
 import { InitOptions } from "i18next";
-import * as LanguageDetector from "i18next-browser-languagedetector";
 import * as XHR from "i18next-xhr-backend";
 
 const isBrowser = typeof window !== "undefined";
@@ -34,10 +33,7 @@ const options: InitOptions = {
 const i18nInstance: i18n.i18n = i18n;
 // for browser use xhr backend to load translations and browser lng detector
 if (isBrowser) {
-  i18nInstance
-    .use(XHR)
-    // .use(Cache)
-    .use(LanguageDetector);
+  i18nInstance.use(XHR);
 }
 
 // initialize if not already initialized

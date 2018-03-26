@@ -1,18 +1,34 @@
-import { cleanEnv, port, str, url } from "envalid";
+import * as envalid from "envalid";
 import * as express from "express";
+import * as i18nextMiddleware from "i18next-express-middleware";
+import * as Backend from "i18next-node-fs-backend";
 import * as next from "next";
 import { join } from "path";
 // import { parse } from "url";
-
-import * as i18nextMiddleware from "i18next-express-middleware";
-import * as Backend from "i18next-node-fs-backend";
 import { i18nInstance } from "./i18n";
 
-const env = cleanEnv(process.env, {
-  GRAPHQL_URI: url(),
-  NODE_ENV: str({ default: "development" }),
-  PORT: port({ default: 3000 }),
-  CONFERENCE_PHONE_NUMBER: str({ default: "3500" }),
+const env = envalid.cleanEnv(process.env, {
+  GRAPHQL_URI: envalid.url(),
+  NODE_ENV: envalid.str({ default: "development" }),
+  PORT: envalid.port({ default: 3000 }),
+  CONFERENCE_PHONE_NUMBER: envalid.str({ default: "3500" }),
+  HOST_RU: envalid.host({
+    desc: "host for which the interface is shown in Russian",
+    default: "none",
+  }),
+});
+
+export const languageDetector = new i18nextMiddleware.LanguageDetector(null, {
+  order: ["querystring", "languageByDomain"],
+  lookupQuerystring: "lang",
+});
+
+languageDetector.addDetector({
+  name: "languageByDomain",
+  lookup: (opts) => {
+    const hostWithoutPort = (opts.headers.host || "").replace(/\:\d+$/, "");
+    return hostWithoutPort === env.HOST_RU ? "ru" : "en";
+  },
 });
 
 const app = next({
@@ -26,7 +42,7 @@ const handle = app.getRequestHandler();
 // using i18next-express-middleware
 i18nInstance
   .use(Backend)
-  .use(i18nextMiddleware.LanguageDetector)
+  .use(languageDetector)
   .init(
     {
       fallbackLng: "en",
@@ -58,7 +74,6 @@ i18nInstance
           // const parsedUrl = parse(req.url, true);
           (req as any).graphqlUri = env.GRAPHQL_URI;
           (req as any).conferencePhoneNumber = env.CONFERENCE_PHONE_NUMBER;
-          // req.i18n = i18nInstance;
           handle(req, res);
         });
 
