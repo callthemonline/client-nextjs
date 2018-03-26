@@ -60,6 +60,7 @@
     "@zeit/next-typescript": "^0.0.10",
     "babel-plugin-inline-import": "^2.0.6",
     "babel-plugin-styled-components": "^1.5.1",
+    "next-compose-plugins": "^1.0.3",
     "nodemon": "^1.17.1",
     "prettier": "^1.11.1",
     "prettier-check": "^2.0.0",
