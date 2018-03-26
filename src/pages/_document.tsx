@@ -7,13 +7,10 @@ import { ServerStyleSheet } from "styled-components";
 import flush from "styled-jsx/server";
 import getPageContext from "../lib/getPageContext";
 
-// prevent caching in production
-// https://github.com/zeit/next-plugins/issues/11#issuecomment-370537941
-let version = "";
+let style = null;
 if (process.env.NODE_ENV === "production") {
-  const hash = createHash("sha256");
-  hash.update(readFileSync(`${process.cwd()}/.next/static/style.css`));
-  version = `?v=${hash.digest("hex").substr(0, 8)}`;
+  // ${"css"} prevents editors from incorrectly highlighting code after css`
+  style = readFileSync(`${process.cwd()}/.next/static/style.${"css"}`, "utf8");
 }
 
 export default class extends Document {
@@ -56,7 +53,11 @@ export default class extends Document {
       <html>
         <Head>
           <title>Test Page</title>
-          <link rel="stylesheet" href={`/_next/static/style.css${version}`} />
+          {typeof style === "string" ? (
+            <style>{style}</style>
+          ) : (
+            <link rel="stylesheet" href="/_next/static/style.css" />
+          )}
           {this.props.styleTags}
           {/* Use minimum-scale=1 to enable GPU rasterization */}
           <meta
@@ -97,7 +98,7 @@ export default class extends Document {
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
-          />{" "}
+          />
         </Head>
         <body>
           <Main />
