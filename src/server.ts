@@ -1,10 +1,11 @@
 import * as envalid from "envalid";
 import * as express from "express";
+import * as fs from "fs";
 import * as i18nextMiddleware from "i18next-express-middleware";
 import * as Backend from "i18next-node-fs-backend";
 import * as next from "next";
 import { join } from "path";
-// import { parse } from "url";
+import { parse } from "url";
 import { i18nInstance } from "./i18n";
 
 const env = envalid.cleanEnv(process.env, {
@@ -38,6 +39,10 @@ const app = next({
 });
 const handle = app.getRequestHandler();
 
+// list static files
+const staticDir = join(__dirname, "static");
+const rootStaticFiles = fs.readdirSync(staticDir).map((name) => `/${name}`);
+
 // init i18next with server-side settings
 // using i18next-express-middleware
 i18nInstance
@@ -69,9 +74,15 @@ i18nInstance
           i18nextMiddleware.missingKeyHandler(i18nInstance),
         );
 
-        // use next.js
         server.get("*", (req, res) => {
-          // const parsedUrl = parse(req.url, true);
+          const { pathname } = parse(req.url, true);
+
+          // serve static files from roots
+          if (rootStaticFiles.indexOf(pathname) !== -1) {
+            return app.serveStatic(req, res, join(staticDir, pathname));
+          }
+
+          // use next.js
           (req as any).graphqlUri = env.GRAPHQL_URI;
           (req as any).conferencePhoneNumber = env.CONFERENCE_PHONE_NUMBER;
           handle(req, res);
