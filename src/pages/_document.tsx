@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 export default class extends Document {
-  public static getInitialProps({ renderPage }) {
+  public static getInitialProps({ renderPage, req }) {
     const sheet = new ServerStyleSheet();
     const pageContext = getPageContext();
     const page = renderPage((App) => (props) =>
@@ -30,6 +30,7 @@ export default class extends Document {
     return {
       ...page,
       pageContext,
+      locale: req.locale,
       styles: (
         <React.Fragment>
           <style
@@ -46,10 +47,10 @@ export default class extends Document {
   }
 
   public render() {
-    const { pageContext } = this.props;
+    const { pageContext, locale } = this.props;
 
     return (
-      <html>
+      <html lang={locale}>
         <Head>
           <title>Test Page</title>
           {typeof style === "string" ? (

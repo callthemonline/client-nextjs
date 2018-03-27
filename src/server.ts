@@ -6,7 +6,7 @@ import * as Backend from "i18next-node-fs-backend";
 import * as next from "next";
 import { join } from "path";
 import { parse } from "url";
-import { i18nInstance } from "./i18n";
+import { i18nInstance, supportedLanguages } from "./i18n";
 
 const env = envalid.cleanEnv(process.env, {
   GRAPHQL_URI: envalid.url(),
@@ -51,7 +51,7 @@ i18nInstance
   .init(
     {
       fallbackLng: "en",
-      preload: ["en", "ru"], // preload all languages
+      preload: supportedLanguages,
       ns: ["_error", "common", "index", "data-demo"], // need to preload all the namespaces
       backend: {
         loadPath: join(__dirname, "../locales/{{lng}}/{{ns}}.json"),

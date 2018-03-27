@@ -4,9 +4,11 @@ import * as XHR from "i18next-xhr-backend";
 
 const isBrowser = typeof window !== "undefined";
 
+export const supportedLanguages = ["en", "ru"];
 const options: InitOptions = {
-  fallbackLng: "en",
+  fallbackLng: supportedLanguages[0],
   load: "languageOnly", // we only provide en, de -> no region specific locals like en-US, de-DE
+  whitelist: supportedLanguages,
 
   // have a common namespace used around the full app
   ns: ["common"],
