@@ -61,7 +61,7 @@
     "babel-plugin-inline-import": "^2.0.6",
     "babel-plugin-styled-components": "^1.5.1",
     "next-compose-plugins": "^1.0.3",
-    "nodemon": "^1.17.1",
+    "nodemon": "^1.18.3",
     "prettier": "^1.11.1",
     "prettier-check": "^2.0.0",
     "ts-node": "^5.0.1",
