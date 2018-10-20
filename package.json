@@ -6,7 +6,7 @@
     "analyze": "BUNDLE_ANALYZE=both yarn build",
     "start": "NODE_ENV=production node build/server.js",
     "lint": "tsc --noEmit && tslint -c tslint.json 'src/**/*.ts{x,}' && prettier-check --ignore-path .gitignore \"{.,src/**}/{*.ts{x,},*.md,ts*.json,*.config.js}\"",
-    "format": "prettier --write --ignore-path .gitignore \"{.,src/**}/{*.ts{x,},*.md,ts*.json,*.config.js}\""
+    "format": "prettier --write --ignore-path .gitignore \"{.,src/**}/{*.ts{x,},*.md,*.json,*.config.js}\""
   },
   "engines": {
     "yarn": "^1.10.1"
@@ -65,7 +65,7 @@
     "babel-plugin-styled-components": "^1.5.1",
     "next-compose-plugins": "^1.0.3",
     "nodemon": "^1.18.3",
-    "prettier": "^1.11.1",
+    "prettier": "^1.14.3",
     "prettier-check": "^2.0.0",
     "ts-node": "^5.0.1",
     "tslint": "^5.9.1",
