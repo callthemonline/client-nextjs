@@ -1,54 +1,59 @@
-import * as i18n from "i18next";
 import { InitOptions } from "i18next";
+import * as ICU from "i18next-icu";
+import en from "i18next-icu/locale-data/en";
+import ru from "i18next-icu/locale-data/ru";
 import * as XHR from "i18next-xhr-backend";
+import * as i18next from "i18next/index"; // force commonjs
 
 const isBrowser = typeof window !== "undefined";
 
-export const supportedLanguages = ["en", "ru"];
+export const supportedLanguages = ["ru", "en"];
 const options: InitOptions = {
   fallbackLng: supportedLanguages[0],
-  load: "languageOnly", // we only provide en, de -> no region specific locals like en-US, de-DE
-  whitelist: supportedLanguages,
+  load: "languageOnly",
 
-  // have a common namespace used around the full app
   ns: ["common"],
   defaultNS: "common",
+  whitelist: supportedLanguages,
 
   debug: false, // process.env.NODE_ENV !== "production",
-  saveMissing: true,
+  saveMissing: process.env.NODE_ENV !== "production",
+  keySeparator: "###",
 
   interpolation: {
-    escapeValue: false, // not needed for react!!
-    formatSeparator: ",",
-    format: (value, format /*, lng */) => {
-      if (format === "uppercase") {
-        return value.toUpperCase();
-      }
-      if (format === "date") {
-        return new Date(parseInt(value, 10) * 1000).toString();
-      }
-      return value;
-    },
+    escapeValue: false,
   },
 };
 
-const i18nInstance: i18n.i18n = i18n;
+const i18n: i18next.i18n = i18next;
+
+const icu = new ICU({
+  formats: {
+    number: {
+      PRICE: {
+        minimumFractionDigits: 2,
+        useGrouping: false,
+      },
+    },
+  },
+});
+icu.addLocaleData(en);
+icu.addLocaleData(ru);
+i18n.use(icu);
+
 // for browser use xhr backend to load translations and browser lng detector
 if (isBrowser) {
-  i18nInstance.use(XHR);
+  i18n.use(XHR);
 }
 
 // initialize if not already initialized
-if (!i18nInstance.isInitialized) {
-  i18nInstance.init(options);
+if (!i18n.isInitialized) {
+  i18n.init(options);
 }
 
-const getInitialProps = (req, namespaces) => {
+export const getInitialProps = (req, namespaces) => {
   if (!namespaces) {
-    namespaces = i18nInstance.options.defaultNS;
-  }
-  if (typeof namespaces === "string") {
-    namespaces = [namespaces];
+    namespaces = [i18n.options.defaultNS];
   }
 
   req.i18n.toJSON = () => null; // do not serialize i18next instance and send to client
@@ -69,6 +74,4 @@ const getInitialProps = (req, namespaces) => {
   };
 };
 
-const I18n = i18n["default"];
-
-export { getInitialProps, I18n, i18nInstance };
+export default i18n;

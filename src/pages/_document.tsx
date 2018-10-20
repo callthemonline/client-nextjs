@@ -1,4 +1,3 @@
-import { readFileSync } from "fs";
 import Document, { Head, Main, NextScript } from "next/document";
 import React from "react";
 import JssProvider from "react-jss/lib/JssProvider";
@@ -6,14 +5,8 @@ import { ServerStyleSheet } from "styled-components";
 import flush from "styled-jsx/server";
 import getPageContext from "../lib/getPageContext";
 
-let style = null;
-if (process.env.NODE_ENV === "production") {
-  // ${"css"} prevents editors from incorrectly highlighting code after css`
-  style = readFileSync(`${process.cwd()}/.next/static/style.${"css"}`, "utf8");
-}
-
-export default class extends Document {
-  public static getInitialProps({ renderPage, req }) {
+export default class extends Document<{ locale; styleTags; pageContext }> {
+  public static getInitialProps({ renderPage, req }: { renderPage; req? }) {
     const sheet = new ServerStyleSheet();
     const pageContext = getPageContext();
     const page = renderPage((App) => (props) =>
@@ -52,12 +45,6 @@ export default class extends Document {
     return (
       <html lang={locale}>
         <Head>
-          <title>Test Page</title>
-          {typeof style === "string" ? (
-            <style>{style}</style>
-          ) : (
-            <link rel="stylesheet" href="/_next/static/style.css" />
-          )}
           {this.props.styleTags}
           {/* Use minimum-scale=1 to enable GPU rasterization */}
           <meta

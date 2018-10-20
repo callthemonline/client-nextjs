@@ -6,7 +6,7 @@ import * as Backend from "i18next-node-fs-backend";
 import * as next from "next";
 import { join } from "path";
 import { parse } from "url";
-import { i18nInstance, supportedLanguages } from "./i18n";
+import i18n, { supportedLanguages } from "./i18n";
 
 const env = envalid.cleanEnv(process.env, {
   GRAPHQL_URI: envalid.url(),
@@ -45,7 +45,7 @@ const rootStaticFiles = fs.readdirSync(staticDir).map((name) => `/${name}`);
 
 // init i18next with server-side settings
 // using i18next-express-middleware
-i18nInstance
+i18n
   .use(Backend)
   .use(languageDetector)
   .init(
@@ -63,7 +63,7 @@ i18nInstance
         const server = express();
 
         // enable middleware for i18next
-        server.use(i18nextMiddleware.handle(i18nInstance));
+        server.use(i18nextMiddleware.handle(i18n));
 
         // serve locales for client
         server.use("/locales", express.static(join(__dirname, "../locales")));
@@ -71,7 +71,7 @@ i18nInstance
         // missing keys
         server.post(
           "/locales/add/:lng/:ns",
-          i18nextMiddleware.missingKeyHandler(i18nInstance),
+          i18nextMiddleware.missingKeyHandler(i18n),
         );
 
         server.get("*", (req, res) => {

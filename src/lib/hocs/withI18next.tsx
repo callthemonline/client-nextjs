@@ -1,11 +1,11 @@
 import { translate } from "react-i18next";
-import { getInitialProps, I18n } from "../../i18n";
+import i18n, { getInitialProps } from "../../i18n";
 
 const isBrowser = typeof window !== "undefined";
 
 export default (namespaces = ["common"]) => (ComposedComponent) => {
   const TranslatedComponent = translate(namespaces, {
-    i18n: I18n,
+    i18n,
     wait: isBrowser,
   })(ComposedComponent);
 

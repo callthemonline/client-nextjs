@@ -1,6 +1,6 @@
-import localForage from "localforage";
+// import localForage from "localforage";
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
-import { autoRehydrate, persistStore } from "redux-persist";
+// import { persistCombineReducers, persistStore } from "redux-persist";
 
 import callLogReducer from "./callLog/reducer";
 import persistenceReducer from "./persistence/reducer";
@@ -11,6 +11,12 @@ const composeEnhancers =
     ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     : compose;
 
+// const config = {
+//   key: "primary",
+//   storage: localForage,
+//   whitelist: ["callLog", "dialer"],
+// };
+
 export default function configureStore() {
   const middlewares = [];
 
@@ -20,14 +26,11 @@ export default function configureStore() {
       persistence: persistenceReducer,
     }),
     undefined,
-    composeEnhancers(autoRehydrate(), applyMiddleware(...middlewares)),
+    composeEnhancers(applyMiddleware(...middlewares)),
   );
 
-  if (isBrowser) {
-    persistStore(store, {
-      storage: localForage,
-      whitelist: ["callLog", "dialer"],
-    });
-  }
+  // if (isBrowser) {
+  //   persistStore(store);
+  // }
   return store;
 }

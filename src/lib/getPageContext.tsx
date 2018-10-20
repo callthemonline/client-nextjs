@@ -1,8 +1,14 @@
+import { blue } from "@material-ui/core/colors";
+import {
+  createGenerateClassName,
+  createMuiTheme,
+} from "@material-ui/core/styles";
 import { SheetsRegistry } from "jss";
-import { blue } from "material-ui/colors";
-import { createGenerateClassName, createMuiTheme } from "material-ui/styles";
 
 const theme = createMuiTheme({
+  typography: {
+    useNextVariants: true,
+  },
   palette: {
     type: "light", // default. can be: dark
     primary: blue,

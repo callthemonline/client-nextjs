@@ -1,16 +1,13 @@
-import { NormalizedCacheObject } from "apollo-cache-inmemory";
-import { ApolloClient } from "apollo-client";
+import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
 import Head from "next/head";
 import React from "react";
 import { ApolloProvider, getDataFromTree } from "react-apollo";
 import initApollo from "../initApollo";
 
-const isBrowser = typeof window !== "undefined";
+const getComponentDisplayName = (Component) =>
+  Component.displayName || Component.name || "Unknown";
 
-// Gets the display name of a JSX component for dev tools
-function getComponentDisplayName(Component) {
-  return Component.displayName || Component.name || "Unknown";
-}
+const isBrowser = typeof window !== "undefined";
 
 interface WithDataPropTypes {
   serverState: {
@@ -30,8 +27,7 @@ export default (ComposedComponent) => {
       // Initial serverState with apollo (empty)
       let serverState;
 
-      const { graphqlUri, conferencePhoneNumber } =
-        ctx.req || (window as any).__NEXT_DATA__.props;
+      const { graphqlUri } = ctx.req || (window as any).__NEXT_DATA__.props;
 
       // Evaluate the composed component's getInitialProps()
       let composedInitialProps = {};
@@ -39,7 +35,7 @@ export default (ComposedComponent) => {
         composedInitialProps = await ComposedComponent.getInitialProps(ctx);
       }
 
-      const apollo = initApollo({ uri: graphqlUri, conferencePhoneNumber });
+      const apollo = initApollo({}, graphqlUri);
 
       // Provide the `url` prop data in case a GraphQL query uses it
       const url = { query: ctx.query, pathname: ctx.pathname };
@@ -81,7 +77,6 @@ export default (ComposedComponent) => {
       return {
         serverState,
         graphqlUri,
-        conferencePhoneNumber,
         ...composedInitialProps,
       };
     }
@@ -90,11 +85,10 @@ export default (ComposedComponent) => {
 
     constructor(props) {
       super(props);
-      this.apollo = initApollo({
-        uri: props.graphqlUri,
-        conferencePhoneNumber: props.conferencePhoneNumber,
-        initialState: this.props.serverState.apollo.data,
-      });
+      this.apollo = initApollo(
+        this.props.serverState.apollo.data,
+        props.graphqlUri,
+      );
     }
 
     public render() {

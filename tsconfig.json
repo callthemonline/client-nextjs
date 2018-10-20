@@ -3,8 +3,8 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "allowJs": true,
     "jsx": "preserve",
+    "allowJs": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "noUnusedLocals": true,
@@ -13,9 +13,9 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "skipLibCheck": true,
+    "strictNullChecks": false,
     "baseUrl": ".",
-    "typeRoots": ["./node_modules/@types"],
-    "lib": ["dom", "es2015", "es2016"]
+    "lib": ["dom", "es2016"]
   },
   "include": ["src/**/*"]
 }
