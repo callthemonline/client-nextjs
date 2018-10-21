@@ -1,25 +1,21 @@
 import Document, { Head, Main, NextScript } from "next/document";
 import React from "react";
-import JssProvider from "react-jss/lib/JssProvider";
 import { ServerStyleSheet } from "styled-components";
 import flush from "styled-jsx/server";
-import getPageContext from "../lib/getPageContext";
 
 export default class extends Document<{ locale; styleTags; pageContext }> {
   public static getInitialProps({ renderPage, req }: { renderPage; req? }) {
+    let pageContext;
     const sheet = new ServerStyleSheet();
-    const pageContext = getPageContext();
-    const page = renderPage((App) => (props) =>
-      sheet.collectStyles(
-        <JssProvider
-          registry={pageContext.sheetsRegistry}
-          generateClassName={pageContext.generateClassName}
-        >
-          <App pageContext={pageContext} {...props} />
-        </JssProvider>,
-      ),
-    );
-    const styleTags = sheet.getStyleElement();
+    const page = renderPage((Component) => {
+      const WrappedComponent = (props) => {
+        pageContext = props.pageContext;
+        return sheet.collectStyles(<Component {...props} />);
+      };
+
+      return WrappedComponent;
+    });
+
     return {
       ...page,
       pageContext,
@@ -35,7 +31,7 @@ export default class extends Document<{ locale; styleTags; pageContext }> {
           {flush() || null}
         </React.Fragment>
       ),
-      styleTags,
+      styleTags: sheet.getStyleElement(),
     };
   }
 

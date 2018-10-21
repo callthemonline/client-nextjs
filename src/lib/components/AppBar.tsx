@@ -31,7 +31,7 @@ const CustomAppBar = ({
       >
         <MenuItem onClick={onResetClick}>{t("appbar.reset")}</MenuItem>
       </Menu>
-      <Typography variant="title" color="inherit">
+      <Typography variant="h6" color="inherit">
         {t("appbar.title")}
       </Typography>
     </Toolbar>
