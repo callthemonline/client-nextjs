@@ -41,14 +41,14 @@ export default compose(
   connect(
     (state) => ({
       callLogIsEmpty: !state.callLog.entries.length,
-      rehydrationComplete: !state.persistence.rehydrationComplete,
+      rehydrationComplete: state.persistence.rehydrationComplete,
     }),
     null,
     null,
     { pure: false },
   ),
   branch(
-    ({ rehydrationComplete }) => rehydrationComplete,
+    ({ rehydrationComplete }) => !rehydrationComplete,
     renderComponent(Loading),
   ),
 )(MainAreaWithDialer);

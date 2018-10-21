@@ -27,7 +27,8 @@ export default (ComposedComponent) => {
       // Initial serverState with apollo (empty)
       let serverState;
 
-      const { graphqlUri } = ctx.req || (window as any).__NEXT_DATA__.props;
+      const { graphqlUri, conferencePhoneNumber } =
+        ctx.req || (window as any).__NEXT_DATA__.props;
 
       // Evaluate the composed component's getInitialProps()
       let composedInitialProps = {};
@@ -35,7 +36,7 @@ export default (ComposedComponent) => {
         composedInitialProps = await ComposedComponent.getInitialProps(ctx);
       }
 
-      const apollo = initApollo({}, graphqlUri);
+      const apollo = initApollo({}, graphqlUri, conferencePhoneNumber);
 
       // Provide the `url` prop data in case a GraphQL query uses it
       const url = { query: ctx.query, pathname: ctx.pathname };
@@ -77,6 +78,7 @@ export default (ComposedComponent) => {
       return {
         serverState,
         graphqlUri,
+        conferencePhoneNumber,
         ...composedInitialProps,
       };
     }
@@ -88,6 +90,7 @@ export default (ComposedComponent) => {
       this.apollo = initApollo(
         this.props.serverState.apollo.data,
         props.graphqlUri,
+        props.conferencePhoneNumber,
       );
     }
 
