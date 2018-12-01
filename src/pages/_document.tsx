@@ -1,65 +1,27 @@
-import { readFileSync } from "fs";
 import Document, { Head, Main, NextScript } from "next/document";
-import React from "react";
-import JssProvider from "react-jss/lib/JssProvider";
 import { ServerStyleSheet } from "styled-components";
-import flush from "styled-jsx/server";
-import getPageContext from "../lib/getPageContext";
 
-let style = null;
-if (process.env.NODE_ENV === "production") {
-  // ${"css"} prevents editors from incorrectly highlighting code after css`
-  style = readFileSync(`${process.cwd()}/.next/static/style.${"css"}`, "utf8");
-}
-
-export default class extends Document {
-  public static getInitialProps({ renderPage, req }) {
+export default class MyDocument extends Document {
+  public static async getInitialProps(ctx) {
     const sheet = new ServerStyleSheet();
-    const pageContext = getPageContext();
-    const page = renderPage((App) => (props) =>
-      sheet.collectStyles(
-        <JssProvider
-          registry={pageContext.sheetsRegistry}
-          generateClassName={pageContext.generateClassName}
-        >
-          <App pageContext={pageContext} {...props} />
-        </JssProvider>,
-      ),
-    );
-    const styleTags = sheet.getStyleElement();
+    const originalRenderPage = ctx.renderPage;
+    ctx.renderPage = () =>
+      originalRenderPage({
+        enhanceApp: (App) => (props) => sheet.collectStyles(<App {...props} />),
+      });
+
+    const initialProps = await Document.getInitialProps(ctx);
     return {
-      ...page,
-      pageContext,
-      locale: req.locale,
-      styles: (
-        <React.Fragment>
-          <style
-            id="jss-server-side"
-            dangerouslySetInnerHTML={{
-              __html: pageContext.sheetsRegistry.toString(),
-            }}
-          />
-          {flush() || null}
-        </React.Fragment>
-      ),
-      styleTags,
+      ...initialProps,
+      // @ts-ignore
+      styles: [...initialProps.styles, ...sheet.getStyleElement()],
     };
   }
 
   public render() {
-    const { pageContext, locale } = this.props;
-
     return (
-      <html lang={locale}>
+      <html lang={this.props.__NEXT_DATA__.props.initialLanguage}>
         <Head>
-          <title>Test Page</title>
-          {typeof style === "string" ? (
-            <style>{style}</style>
-          ) : (
-            <link rel="stylesheet" href="/_next/static/style.css" />
-          )}
-          {this.props.styleTags}
-          {/* Use minimum-scale=1 to enable GPU rasterization */}
           <meta
             name="viewport"
             content={
@@ -91,10 +53,10 @@ export default class extends Document {
           <meta name="apple-mobile-web-app-title" content="callthem.online" />
           <meta name="application-name" content="callthem.online" />
           {/* PWA primary color */}
-          <meta
+          {/* <meta
             name="theme-color"
-            content={pageContext.theme.palette.primary.main}
-          />
+            content={this.props.pageContext.theme.palette.primary.main}
+          /> */}
         </Head>
         <body>
           <Main />

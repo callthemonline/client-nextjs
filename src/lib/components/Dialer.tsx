@@ -1,15 +1,15 @@
+import IconButton from "@material-ui/core/IconButton";
+import Paper from "@material-ui/core/Paper";
+import TextField from "@material-ui/core/TextField";
+import CallIcon from "@material-ui/icons/Call";
+import CallEndIcon from "@material-ui/icons/CallEnd";
+import PhoneInTalkIcon from "@material-ui/icons/PhoneInTalk";
 import { PhoneNumberFormat, PhoneNumberUtil } from "google-libphonenumber";
 import { get, trim } from "lodash";
-import CallIcon from "material-ui-icons/Call";
-import CallEndIcon from "material-ui-icons/CallEnd";
-import PhoneInTalkIcon from "material-ui-icons/PhoneInTalk";
-import IconButton from "material-ui/IconButton";
-import Paper from "material-ui/Paper";
-import TextField from "material-ui/TextField";
 import PropTypes from "prop-types";
 import React from "react";
 import { graphql } from "react-apollo";
-import { translate } from "react-i18next";
+import { withNamespaces } from "react-i18next";
 import { connect } from "react-redux";
 import {
   CALL_STATUS_ACTIVE,
@@ -105,7 +105,7 @@ const Dialer = ({
 );
 
 export default compose(
-  translate("common"),
+  withNamespaces("common"),
   withPropsOnChange([], () => ({
     requireLogin: () => {
       window.location.href = "/login";

@@ -1,12 +1,13 @@
-import { InMemoryCache } from "apollo-cache-inmemory";
-import { ApolloClient } from "apollo-client";
+import {
+  ApolloClient,
+  HttpLink,
+  InMemoryCache,
+  NormalizedCacheObject,
+} from "apollo-boost";
 import { setContext } from "apollo-link-context";
-import { HttpLink } from "apollo-link-http";
 import { parse } from "cookie";
 import fetch from "isomorphic-unfetch";
 import localLink from "./graphql/state";
-
-let apolloClient = null;
 
 const isBrowser = typeof window !== "undefined";
 
@@ -25,14 +26,14 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-function create({ uri, initialState, conferencePhoneNumber }) {
+function create(initialState, graphqlUri, conferencePhoneNumber) {
   return new ApolloClient({
     connectToDevTools: isBrowser,
     ssrMode: !isBrowser, // Disables forceFetch on the server (so queries are only run once)
     link: localLink(conferencePhoneNumber).concat(
       authLink.concat(
         new HttpLink({
-          uri, // Server URL (must be absolute)
+          uri: graphqlUri, // Server URL (must be absolute)
           credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
         }),
       ),
@@ -41,16 +42,22 @@ function create({ uri, initialState, conferencePhoneNumber }) {
   });
 }
 
-export default function initApollo(options) {
+let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;
+
+export default function initApollo(
+  initialState,
+  graphqlUri,
+  conferencePhoneNumber,
+): ApolloClient<NormalizedCacheObject> {
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)
   if (!isBrowser) {
-    return create(options);
+    return create(initialState, graphqlUri, conferencePhoneNumber);
   }
 
   // Reuse client on the client-side
   if (!apolloClient) {
-    apolloClient = create(options);
+    apolloClient = create(initialState, graphqlUri, conferencePhoneNumber);
   }
 
   return apolloClient;

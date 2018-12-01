@@ -1,12 +1,8 @@
 {
-  "dialer": {
-    "label": "Кому звоним?",
-    "sample": "+7 999 000-00-00",
-    "dialing": "звоним...",
-    "onAir": "на связи!"
-  },
-  "appbar": {
-    "title": "позвони.им",
-    "reset": "Сбросить"
-  }
+  "dialer.label": "Кому звоним?",
+  "dialer.sample": "+7 999 000-00-00",
+  "dialer.dialing": "звоним...",
+  "dialer.onAir": "на связи!",
+  "appbar.title": "позвони.им",
+  "appbar.reset": "Сбросить"
 }

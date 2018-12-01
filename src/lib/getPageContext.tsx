@@ -1,12 +1,20 @@
+import blue from "@material-ui/core/colors/blue";
+import {
+  createGenerateClassName,
+  createMuiTheme,
+} from "@material-ui/core/styles";
 import { SheetsRegistry } from "jss";
-import { blue } from "material-ui/colors";
-import { createGenerateClassName, createMuiTheme } from "material-ui/styles";
 
+// A theme with custom primary and secondary color.
+// It's optional.
 const theme = createMuiTheme({
   palette: {
     type: "light", // default. can be: dark
     primary: blue,
     divider: "#7E7", // green-ish ListItem background
+  },
+  typography: {
+    useNextVariants: true,
   },
 });
 
@@ -25,7 +33,7 @@ function createPageContext() {
 export default function getPageContext() {
   // Make sure to create a new context for every server-side request so that data
   // isn't shared between connections (which would be bad).
-  if (!(process as any).browser) {
+  if (typeof window !== "undefined") {
     return createPageContext();
   }
 
