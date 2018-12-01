@@ -9,7 +9,7 @@ import { get, trim } from "lodash";
 import PropTypes from "prop-types";
 import React from "react";
 import { graphql } from "react-apollo";
-import { translate } from "react-i18next";
+import { withNamespaces } from "react-i18next";
 import { connect } from "react-redux";
 import {
   CALL_STATUS_ACTIVE,
@@ -105,7 +105,7 @@ const Dialer = ({
 );
 
 export default compose(
-  translate("common"),
+  withNamespaces("common"),
   withPropsOnChange([], () => ({
     requireLogin: () => {
       window.location.href = "/login";

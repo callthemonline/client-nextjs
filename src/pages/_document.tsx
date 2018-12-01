@@ -1,48 +1,27 @@
 import Document, { Head, Main, NextScript } from "next/document";
-import React from "react";
 import { ServerStyleSheet } from "styled-components";
-import flush from "styled-jsx/server";
 
-export default class extends Document<{ locale; styleTags; pageContext }> {
-  public static getInitialProps({ renderPage, req }: { renderPage; req? }) {
-    let pageContext;
+export default class MyDocument extends Document {
+  public static async getInitialProps(ctx) {
     const sheet = new ServerStyleSheet();
-    const page = renderPage((Component) => {
-      const WrappedComponent = (props) => {
-        pageContext = props.pageContext;
-        return sheet.collectStyles(<Component {...props} />);
-      };
+    const originalRenderPage = ctx.renderPage;
+    ctx.renderPage = () =>
+      originalRenderPage({
+        enhanceApp: (App) => (props) => sheet.collectStyles(<App {...props} />),
+      });
 
-      return WrappedComponent;
-    });
-
+    const initialProps = await Document.getInitialProps(ctx);
     return {
-      ...page,
-      pageContext,
-      locale: req.locale,
-      styles: (
-        <React.Fragment>
-          <style
-            id="jss-server-side"
-            dangerouslySetInnerHTML={{
-              __html: pageContext.sheetsRegistry.toString(),
-            }}
-          />
-          {flush() || null}
-        </React.Fragment>
-      ),
-      styleTags: sheet.getStyleElement(),
+      ...initialProps,
+      // @ts-ignore
+      styles: [...initialProps.styles, ...sheet.getStyleElement()],
     };
   }
 
   public render() {
-    const { pageContext, locale } = this.props;
-
     return (
-      <html lang={locale}>
+      <html lang={this.props.__NEXT_DATA__.props.initialLanguage}>
         <Head>
-          {this.props.styleTags}
-          {/* Use minimum-scale=1 to enable GPU rasterization */}
           <meta
             name="viewport"
             content={
@@ -74,10 +53,10 @@ export default class extends Document<{ locale; styleTags; pageContext }> {
           <meta name="apple-mobile-web-app-title" content="callthem.online" />
           <meta name="application-name" content="callthem.online" />
           {/* PWA primary color */}
-          <meta
+          {/* <meta
             name="theme-color"
-            content={pageContext.theme.palette.primary.main}
-          />
+            content={this.props.pageContext.theme.palette.primary.main}
+          /> */}
         </Head>
         <body>
           <Main />

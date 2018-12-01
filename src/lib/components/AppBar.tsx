@@ -6,7 +6,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
-import { translate } from "react-i18next";
+import { withNamespaces } from "react-i18next";
 import { connect } from "react-redux";
 import { compose, withHandlers, withState } from "recompose";
 
@@ -39,7 +39,7 @@ const CustomAppBar = ({
 );
 
 export default compose(
-  translate("common"),
+  withNamespaces("common"),
   connect(),
   withState("menuAnchorEl", "setMenuAnchorEl"),
   withState("menuIsOpen", "setMenuIsOpen", false),

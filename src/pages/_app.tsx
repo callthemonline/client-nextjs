@@ -5,17 +5,11 @@ import App, { Container } from "next/app";
 import React from "react";
 import JssProvider from "react-jss/lib/JssProvider";
 import { Provider } from "react-redux";
+import i18n from "../i18n";
 import getPageContext from "../lib/getPageContext";
 import createStore from "../lib/redux/store";
 
 class MyApp extends App<{ store }> {
-  public static async getInitialProps({ Component, ctx }) {
-    let pageProps = {};
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
-    }
-    return { pageProps };
-  }
   private pageContext;
 
   constructor(props) {
@@ -34,8 +28,8 @@ class MyApp extends App<{ store }> {
   public render() {
     const { Component, pageProps, store } = this.props;
     return (
-      <Provider store={store}>
-        <Container>
+      <Container>
+        <Provider store={store}>
           {/* Wrap every page in Jss and Theme providers */}
           <JssProvider
             registry={this.pageContext.sheetsRegistry}
@@ -54,10 +48,10 @@ class MyApp extends App<{ store }> {
               <Component pageContext={this.pageContext} {...pageProps} />
             </MuiThemeProvider>
           </JssProvider>
-        </Container>
-      </Provider>
+        </Provider>
+      </Container>
     );
   }
 }
 
-export default withRedux(createStore)(MyApp);
+export default i18n.appWithTranslation(withRedux(createStore)(MyApp));
